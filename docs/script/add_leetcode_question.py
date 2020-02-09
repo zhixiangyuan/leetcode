@@ -75,7 +75,7 @@ title_name = get_title_name()
 
 # 生成文本文件，文件名为 <序号.md>，文件内容使用固定模板
 def generate_new_title_file(root_path, template_path, title_category, title_index):
-    new_title_file_path = root_path + "/" + title_category + "/" + title_index + ".md"
+    new_title_file_path = root_path + "/content/" + title_category + "/" + title_index + ".md"
     if os.path.exists(new_title_file_path):
         print("您需要生成的 [" + title_index + ".md] 文件已存在")
         print("退出脚本")
@@ -106,8 +106,12 @@ def insert_specify_file_line(summary_file_path, line_num, content):
 
 # 标识目前处于哪一个目录
 mark_category = ""
+last_line = 0
 # 将数据初始化到
 for (line_num, line) in enumerate(summary_fd):
+    if str(line).strip(" ") == "" or line == "\n":
+        continue
+    last_line = line_num
     # mark_category == "" 表示未进入目录的情况
     # 然后查找正则表示找到需要进入的目录
     if mark_category == "":
@@ -117,16 +121,23 @@ for (line_num, line) in enumerate(summary_fd):
     elif mark_category == " ":
         current_index = re.search("\\(.*\\)", line, flags=0) \
             .group(0) \
-            .replace("(" + title_category + "/", "") \
+            .replace("(content/" + title_category + "/", "") \
             .replace(".md)", "")
         if str(line).startswith("*"):
             # 如果进入下一个目录则说明这是最大的一条记录
             insert_specify_file_line(
                 summary_file_path, line_num,
-                "  * [" + title_index + ". " + title_name + "](" + title_category + "/" + title_index + ".md)")
+                "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")
+            mark_category = 1
             break
         elif int(current_index) > int(title_index):
             insert_specify_file_line(
                 summary_file_path, line_num,
-                "  * [" + title_index + ". " + title_name + "](" + title_category + "/" + title_index + ".md)")
+                "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")
+            mark_category = 1
             break
+# 如果最后还没有写入则将其写入最后一行
+if mark_category != 1:
+    insert_specify_file_line(
+        summary_file_path, last_line + 1,
+        "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")

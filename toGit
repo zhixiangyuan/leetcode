@@ -1,0 +1,7 @@
+#!/bin/bash
+
+gitbook build . ./docs
+
+git add --all
+git commit -m "update file"
+git push origin master
