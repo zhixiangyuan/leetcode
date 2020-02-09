@@ -9,43 +9,8 @@ import re
 file_name = os.path.basename(__file__)
 file_path = os.path.abspath(__file__)
 root_path = file_path.replace("/script/" + file_name, "")
+summary_path = root_path + "/SUMMARY.md"
 template_path = root_path + "/script/template"
-
-category_map = {
-    "arithmetic": "算法",
-    "database": "数据库",
-    "shell": "Shell",
-    "multithreading": "多线程"
-}
-
-
-# 判断是哪种类型的题目
-def get_title_category():
-    print("题目类型：")
-    print("1. 算法")
-    print("2. 数据库")
-    print("3. Shell")
-    print("4. 多线程")
-    sys.stdout.write("请输入题目类型的序号（默认 1）>")
-    title_category_index = sys.stdin.readline().replace("\n", "")
-    if title_category_index == "1":
-        title_category = "arithmetic"
-    elif title_category_index == "2":
-        title_category = "database"
-    elif title_category_index == "3":
-        title_category = "shell"
-    elif title_category_index == "4":
-        title_category = "multithreading"
-    elif title_category_index == "":
-        title_category = "arithmetic"
-    else:
-        print(title_category_index)
-        sys.stdout.write("您输入的题目类型有误，请重新输入:")
-        title_category = get_title_category()
-    return title_category
-
-
-title_category = get_title_category()
 
 
 # 需要知道题目的标题以及编号
@@ -54,6 +19,9 @@ def get_title_index():
     title_index = sys.stdin.readline().replace("\n", "")
     if title_index == "":
         print("请不要输入空的内容，下面请重新输入：")
+        title_index = get_title_index()
+    if int(title_index) <= 0:
+        print("请不要输入小于等于 0 的编号")
         title_index = get_title_index()
     return title_index
 
@@ -74,8 +42,18 @@ title_name = get_title_name()
 
 
 # 生成文本文件，文件名为 <序号.md>，文件内容使用固定模板
-def generate_new_title_file(root_path, template_path, title_category, title_index):
-    new_title_file_path = root_path + "/content/" + title_category + "/" + title_index + ".md"
+def calculate_file_path(index):
+    factor = int(index) // 100
+    start_index = factor * 100 + 1
+    end_index = factor * 100 + 99
+    return "content/" + str(start_index) + "-" + str(end_index)
+
+
+def generate_new_title_file(root_path, template_path, title_index):
+    new_title_directory_path = root_path + "/" + calculate_file_path(title_index)
+    if not os.path.exists(new_title_directory_path):
+        os.makedirs(new_title_directory_path)
+    new_title_file_path = new_title_directory_path + "/" + title_index + ".md"
     if os.path.exists(new_title_file_path):
         print("您需要生成的 [" + title_index + ".md] 文件已存在")
         print("退出脚本")
@@ -83,9 +61,9 @@ def generate_new_title_file(root_path, template_path, title_category, title_inde
     shutil.copy2(template_path + "/template.md", new_title_file_path)
 
 
-generate_new_title_file(root_path, template_path, title_category, title_index)
+generate_new_title_file(root_path, template_path, title_index)
 
-# 修改 SUMMARY.md 文件，为该文件加上目录
+# 修改 SUMMARY.md 文件，将该文件加入目录
 summary_file_path = root_path + "/SUMMARY.md"
 summary_fd = open(summary_file_path, "r+")
 
@@ -98,46 +76,33 @@ def insert_specify_file_line(summary_file_path, line_num, content):
     f.close()
     lines.insert(line_num, content + "\n")
     s = ''.join(lines)
-    f = open(summary_file_path, 'w+')  # 重新写入文件
+    f = open(summary_file_path, 'w')
     f.write(s)
     f.close()
-    del lines[:]  # 清空列表
 
 
-# 标识目前处于哪一个目录
-mark_category = ""
-last_line = 0
-# 将数据初始化到
+is_write = 0
+last_line_num = 0
 for (line_num, line) in enumerate(summary_fd):
-    if str(line).strip(" ") == "" or line == "\n":
+    # 跳过空行
+    if str(line).strip(" ") == "" or line == "\n" \
+            or str(line).__contains__("* [项目介绍](README.md)") \
+            or str(line).startswith("#"):
         continue
-    last_line = line_num
-    # mark_category == "" 表示未进入目录的情况
-    # 然后查找正则表示找到需要进入的目录
-    if mark_category == "":
-        if re.search("\\* \\[" + category_map[title_category] + "\\]\\(.*\\)", line, flags=0) is not None:
-            # 随便给一个空格，表示已经进入了目录
-            mark_category = " "
-    elif mark_category == " ":
-        current_index = re.search("\\(.*\\)", line, flags=0) \
-            .group(0) \
-            .replace("(content/" + title_category + "/", "") \
-            .replace(".md)", "")
-        if str(line).startswith("*"):
-            # 如果进入下一个目录则说明这是最大的一条记录
-            insert_specify_file_line(
-                summary_file_path, line_num,
-                "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")
-            mark_category = 1
-            break
-        elif int(current_index) > int(title_index):
-            insert_specify_file_line(
-                summary_file_path, line_num,
-                "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")
-            mark_category = 1
-            break
-# 如果最后还没有写入则将其写入最后一行
-if mark_category != 1:
+    last_line_num = line_num
+    current_index = str(line).split("/")[2].replace(".md)", "")
+    if int(current_index) > int(title_index):
+        insert_specify_file_line(
+            summary_path, line_num,
+            "* [" + title_index + ". " + title_name + "]("
+            + calculate_file_path(title_index) + "/" + title_index + ".md)"
+        )
+        is_write = 1
+        break
+
+if is_write == 0:
     insert_specify_file_line(
-        summary_file_path, last_line + 1,
-        "  * [" + title_index + ". " + title_name + "](content/" + title_category + "/" + title_index + ".md)")
+        summary_path, last_line_num + 1,
+        "* [" + title_index + ". " + title_name + "]("
+        + calculate_file_path(title_index) + "/" + title_index + ".md)"
+    )
