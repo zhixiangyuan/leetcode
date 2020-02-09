@@ -17,3 +17,7 @@ project
     |- docs                       // 渲染出的 html 放到这里面
     |- script                     // 存放项目相关的脚本
 ```
+
+# 微信群交流群
+
+![](/static/2020/February/1.jpeg)
