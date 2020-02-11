@@ -1,6 +1,6 @@
 #!/bin/bash
 
-gitbook build . ./docs
+gitbook build ./src ./docs
 
 git status
 git add --all

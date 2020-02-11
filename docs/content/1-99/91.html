@@ -178,6 +178,36 @@
                                 <h1 id="1-&#x539F;&#x9898;&#x94FE;&#x63A5;">1 &#x539F;&#x9898;&#x94FE;&#x63A5;</h1>
 <p><a href="https://leetcode-cn.com/problems/decode-ways/" target="_blank">&#x89E3;&#x7801;&#x65B9;&#x6CD5;</a></p>
 <h1 id="2-&#x89E3;">2 &#x89E3;</h1>
+<pre><code class="lang-java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">numDecodings</span><span class="hljs-params">(String s)</span> </span>{
+        <span class="hljs-keyword">int</span> len = s.length();
+        <span class="hljs-comment">// &#x5982;&#x679C;&#x7B2C;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x4E3A; 0&#xFF0C;&#x90A3;&#x4E48;&#x540E;&#x9762;&#x6309;&#x7167;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x89E3;&#x6790;&#x6216;&#x8005;&#x4E24;&#x4E2A;&#x6570;&#x5B57;&#x5747;&#x65E0;&#x6CD5;&#x89E3;&#x6790;</span>
+        <span class="hljs-keyword">int</span> oneStep = s.charAt(<span class="hljs-number">0</span>) != <span class="hljs-string">&apos;0&apos;</span> ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> twoStep = oneStep;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; len;i++) {
+            <span class="hljs-comment">// &#x4FDD;&#x5B58;&#x4EE5;&#x5355;&#x4E2A;&#x5B57;&#x6BCD;&#x8FDB;&#x884C;&#x89E3;&#x6790;&#x7684;&#x53EF;&#x80FD;&#x6027;</span>
+            <span class="hljs-keyword">int</span> temp = oneStep;
+            <span class="hljs-keyword">if</span> (s.charAt(i) == <span class="hljs-string">&apos;0&apos;</span>) {
+                <span class="hljs-comment">// &#x5982;&#x679C;&#x5F53;&#x524D;&#x6307;&#x9488;&#x6307;&#x5411;&#x7684;&#x6570;&#x5B57;&#x4E3A; 0&#xFF0C;</span>
+                <span class="hljs-comment">// &#x90A3;&#x4E48;&#x4EE5;&#x5355;&#x4E2A;&#x5B57;&#x6BCD;&#x6765;&#x89E3;&#x6790;&#x7684;&#x65B9;&#x5F0F;&#x4FBF;&#x65E0;&#x6CD5;&#x89E3;&#x6790;&#xFF0C;</span>
+                <span class="hljs-comment">// &#x90A3;&#x4E48;&#x8FD9;&#x4E00;&#x6761;&#x8DEF;&#x5F84;&#x7684;&#x53EF;&#x80FD;&#x6027;&#x76F4;&#x63A5;&#x6E05;&#x96F6;</span>
+                oneStep = <span class="hljs-number">0</span>;
+            }
+            <span class="hljs-keyword">if</span> (s.charAt(i - <span class="hljs-number">1</span>) == <span class="hljs-string">&apos;1&apos;</span> || (s.charAt(i - <span class="hljs-number">1</span>) == <span class="hljs-string">&apos;2&apos;</span> &amp;&amp; s.charAt(i) &lt;= <span class="hljs-string">&apos;6&apos;</span>)) {
+                <span class="hljs-comment">// &#x5982;&#x679C;&#xFF08;&#x4E0A;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x662F; 1 &#xFF09;&#x6216;&#x8005;&#xFF08;&#x4E0A;&#x4E00;&#x4E2A;&#x5B57;&#x6BCD;&#x662F; 2 &#x5E76;&#x4E14;&#x5F53;&#x524D;&#x5B57;&#x6BCD;&#x5C0F;&#x4E8E; 6&#xFF09;</span>
+                <span class="hljs-comment">// &#x5219;&#x8BF4;&#x660E;&#x4E0A;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x548C;&#x5F53;&#x524D;&#x6307;&#x5411;&#x7684;&#x6570;&#x5B57;&#x5408;&#x5E76;&#x5728;&#x4E00;&#x8D77;&#x53EF;&#x4EE5;&#x4F5C;&#x4E3A;&#x4E00;&#x4E2A;&#x5B57;&#x6BCD;&#x88AB;&#x89E3;&#x7801;</span>
+                <span class="hljs-comment">// &#x90A3;&#x4E48;&#x5219;&#x5C06;&#x5355;&#x4E2A;&#x6570;&#x5B57;&#x89E3;&#x6790;&#x7684;&#x53EF;&#x80FD;&#x6027;&#x548C;&#x4E24;&#x4E2A;&#x6570;&#x5B57;&#x4E00;&#x8D77;&#x88AB;&#x89E3;&#x6790;&#x7684;&#x53EF;&#x80FD;&#x6027;&#x76F8;&#x52A0;</span>
+                oneStep += twoStep;
+            }
+            <span class="hljs-comment">// temp &#x662F;&#x4E4B;&#x524D;&#x5355;&#x4E2A;&#x5B57;&#x6BCD;&#x89E3;&#x6790;&#x7684;&#x53EF;&#x80FD;&#x6027;</span>
+            <span class="hljs-comment">// &#x5F53;&#x6307;&#x9488;&#x6307;&#x5411;&#x4E0B;&#x4E00;&#x4E2A;&#x6570;&#x5B57;&#x65F6;&#xFF0C;&#x89E3;&#x6790;&#x5355;&#x4E2A;&#x5B57;&#x6BCD;&#x7684;&#x53EF;&#x80FD;&#x6027;&#x53D8;&#x6210;&#x89E3;&#x6790;</span>
+            <span class="hljs-comment">// &#x63A5;&#x4E0B;&#x6765;&#x4E24;&#x4E2A;&#x6570;&#x5B57;&#x7684;&#x53EF;&#x80FD;&#x6027;</span>
+            twoStep = temp;
+        }
+        <span class="hljs-keyword">return</span> oneStep;
+    }
+}
+</code></pre>
 <h1 id="&#x53C2;&#x8003;&#x6587;&#x7AE0;">&#x53C2;&#x8003;&#x6587;&#x7AE0;</h1>
 
                                 
@@ -218,7 +248,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"91. 解码方法","level":"1.3","depth":1,"previous":{"title":"70. 爬楼梯","level":"1.2","depth":1,"path":"content/1-99/70.md","ref":"content/1-99/70.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"content/1-99/91.md","mtime":"2020-02-10T10:15:07.120Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-10T10:24:35.183Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"91. 解码方法","level":"1.3","depth":1,"previous":{"title":"70. 爬楼梯","level":"1.2","depth":1,"path":"content/1-99/70.md","ref":"content/1-99/70.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"content/1-99/91.md","mtime":"2020-02-11T04:50:27.720Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-11T05:01:50.849Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
