@@ -11,7 +11,7 @@ project
     |- docs                               // 渲染出的 html 放到这里面
     |- script                             // 存放项目相关的脚本
         |- add_leetcode_question.py       // 用于生成新的题目模版
-        |- add_lmage_to_blog.py           // 用于添加资源文件到 static 中
+        |- add_lmage_to_leetcode_blog.py  // 用于添加资源文件到 static 中
     |- src
         |- content                        // 存放相关教程 markdown 的文件夹，文件夹下按照题目编号进行分类
             |- 1-99                       // 编号为 [1, 99] 的题目放在 1-99 的文件夹里
