@@ -1,8 +1,0 @@
-#!/bin/bash
-
-gitbook build . ./docs
-
-git status
-git add --all
-git commit -m "update file"
-git push origin master

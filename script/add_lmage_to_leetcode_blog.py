@@ -23,7 +23,7 @@ numToMonth = {
 
 file_name = os.path.basename(__file__)
 file_path = os.path.abspath(__file__)
-root_path = file_path.replace("/script/" + file_name, "")
+root_path = file_path.replace("/script/" + file_name, "") + "/src"
 
 
 def split_file_suffix(path):

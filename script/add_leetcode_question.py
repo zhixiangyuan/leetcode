@@ -8,9 +8,9 @@ import re
 
 file_name = os.path.basename(__file__)
 file_path = os.path.abspath(__file__)
-root_path = file_path.replace("/script/" + file_name, "")
+root_path = file_path.replace("/script/" + file_name, "") + "/src"
 summary_path = root_path + "/SUMMARY.md"
-template_path = root_path + "/script/template"
+template_path = file_path.replace(file_name, "template")
 
 
 # 需要知道题目的标题以及编号
