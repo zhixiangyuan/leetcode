@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd ..
-source toGit
+source ./toGit
