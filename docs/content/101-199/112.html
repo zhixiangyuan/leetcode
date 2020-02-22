@@ -269,8 +269,46 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="1-&#x539F;&#x9898;&#x94FE;&#x63A5;">1 &#x539F;&#x9898;&#x94FE;&#x63A5;</h1>
-<p><a href=""></a></p>
+<p><a href="https://leetcode-cn.com/problems/path-sum/" target="_blank">&#x8DEF;&#x5F84;&#x603B;&#x548C;</a></p>
 <h1 id="2-&#x89E3;">2 &#x89E3;</h1>
+<h2 id="21-&#x9012;&#x5F52;">2.1 &#x9012;&#x5F52;</h2>
+<ul>
+<li>&#x7A7A;&#x95F4;&#x590D;&#x6742;&#x5EA6;: O(log(n))</li>
+<li>&#x65F6;&#x95F4;&#x590D;&#x6742;&#x5EA6;: O(n)</li>
+</ul>
+<p>&#x6574;&#x4E2A;&#x601D;&#x8DEF;&#x662F;&#x4ECE;&#x6839;&#x8282;&#x70B9;&#x5F00;&#x59CB;&#x5411;&#x4E0B;&#x52A0;&#xFF0C;&#x4E00;&#x76F4;&#x52A0;&#x5230;&#x53F6;&#x5B50;&#x7ED3;&#x70B9;&#xFF0C;&#x7136;&#x540E;&#x5224;&#x65AD;&#x8BE5;&#x503C;&#x662F;&#x5426;&#x4E0E;&#x4F20;&#x5165;&#x7684;&#x503C;&#x76F8;&#x7B49;&#xFF0C;&#x5982;&#x679C;&#x76F8;&#x7B49;&#x5219; <code>return true</code></p>
+<pre><code class="lang-java"><span class="hljs-comment">/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasPathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> sum)</span> </span>{
+        <span class="hljs-keyword">if</span> (root == <span class="hljs-keyword">null</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+        }
+        <span class="hljs-keyword">return</span> hasPathSum(root, sum, <span class="hljs-number">0</span>);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">hasPathSum</span><span class="hljs-params">(TreeNode root, <span class="hljs-keyword">int</span> sum, <span class="hljs-keyword">int</span> calSum)</span> </span>{
+        calSum += root.val;
+        <span class="hljs-keyword">if</span> (root.left == <span class="hljs-keyword">null</span> &amp;&amp; root.right == <span class="hljs-keyword">null</span> &amp;&amp; sum == calSum) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (root.left != <span class="hljs-keyword">null</span> &amp;&amp; hasPathSum(root.left, sum, calSum)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">if</span> (root.right != <span class="hljs-keyword">null</span> &amp;&amp; hasPathSum(root.right, sum, calSum)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+}
+</code></pre>
 <h1 id="&#x53C2;&#x8003;&#x6587;&#x7AE0;">&#x53C2;&#x8003;&#x6587;&#x7AE0;</h1>
 
                                 
@@ -315,7 +353,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"112. 路径总和","level":"1.7","depth":1,"next":{"title":"121. 买卖股票的最佳时机","level":"1.8","depth":1,"path":"content/101-199/121.md","ref":"content/101-199/121.md","articles":[]},"previous":{"title":"91. 解码方法","level":"1.6","depth":1,"path":"content/1-99/91.md","ref":"content/1-99/91.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"content/101-199/112.md","mtime":"2020-02-09T06:22:47.092Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-22T04:53:11.558Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"112. 路径总和","level":"1.7","depth":1,"next":{"title":"121. 买卖股票的最佳时机","level":"1.8","depth":1,"path":"content/101-199/121.md","ref":"content/101-199/121.md","articles":[]},"previous":{"title":"91. 解码方法","level":"1.6","depth":1,"path":"content/1-99/91.md","ref":"content/1-99/91.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"content/101-199/112.md","mtime":"2020-02-22T05:01:05.758Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2020-02-22T05:01:22.179Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
